@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dicts aggregator</title>
+</head>
+<body>
+<p>home page</p>
+    <div id="content">
+        {% block content %}
+            {% if user.is_authenticated %}
+                <p>Welcome, {{ user.username }}. Thanks for logging in.</p>
+                <p><a href={% url "logout" %}>Log out</a>.</p>
+            {% else %}
+                <p>Welcome, new user. Please <a href={% url "login" %}>log in</a> or <a href={% url "signup" %}>sign up</a>. </p>
+            {% endif %}
+        {% endblock %}
+    </div>
+</body>
+</html>
