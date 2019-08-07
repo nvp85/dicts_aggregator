@@ -5,12 +5,18 @@
     <title>Dicts aggregator</title>
 </head>
 <body>
-<p>home page</p>
+<h2>home page</h2>
     <div id="content">
         {% block content %}
             {% if user.is_authenticated %}
-                <p>Welcome, {{ user.username }}. Thanks for logging in.</p>
-                <p><a href={% url "logout" %}>Log out</a>.</p>
+                <p>Welcome, {{ user.username }}. Thanks for logging in. <a href={% url "logout" %}>Log out</a>.</p>
+                <form method="post" action={% url "search" %}>
+                    {% csrf_token %}
+                    {{ search_form.as_p }}
+                    <input type="submit" value="Search">
+                </form>
+                {% block search_result %}
+                {% endblock %}
             {% else %}
                 <p>Welcome, new user. Please <a href={% url "login" %}>log in</a> or <a href={% url "signup" %}>sign up</a>. </p>
             {% endif %}

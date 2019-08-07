@@ -11,17 +11,17 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+# import pathlib
+
 import environ
 
 
-env = environ.Env(
-    DEBUG=(bool, True),
-)
+env = environ.Env()
 environ.Env.read_env('.env')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+# BASE_PATH = pathlib.Path(os.path.abspath(__file__))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -29,10 +29,17 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
+# Dictionaries API keys
+YANDEX_API_KEY = env('YANDEX_API_KEY', default='')
+YANDEX_API_URL = 'https://dictionary.yandex.net/api/v1/dicservice.json/lookup'
+OXFORD_APP_ID = env('OXFORD_APP_ID', default='')
+OXFORD_APP_KEY = env('OXFORD_APP_KEY', default='')
+OXFORD_API_URL = 'https://od-api.oxforddictionaries.com/api/v2/'
 
-ALLOWED_HOSTS = []
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = env.bool('DEBUG', default=False)
+
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
 
 
 # Application definition
@@ -62,8 +69,8 @@ ROOT_URLCONF = 'dicts_aggregator.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        # 'DIRS': [str(BASE_PATH / 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

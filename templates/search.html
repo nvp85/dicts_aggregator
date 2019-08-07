@@ -1,0 +1,44 @@
+{% extends "home.html" %}
+
+{% block search_result %}
+    {% for article in result %}
+        <h3>{{ article.dictionary }}</h3>
+        <h4>{{ article.word }}</h4>
+                <ol>
+                {% for group in article.groups %}
+                    <li>
+                        <b>{{ group.word }}</b>,
+                        {{ group.part_of_speech }}
+                        {% for p in group.pronunciations %}, [{{ p.transcription }}]{% endfor %}
+
+                    <br>
+                    <ol>
+                    {% for entry in group.entries %}
+                        <li>
+                        <p>
+                            {% for text in entry.content %}
+                                {{ text }};
+                            {% endfor %}
+                        </p>
+                        {% if entry.synonyms %}
+                        <p>Syn.:
+                            {% for syn in entry.synonyms %}
+                                {{ syn }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </p>
+                        {% endif %}
+                        {% if entry.examples %}
+                        <p>Ex.:
+                            {% for ex in entry.examples %}
+                                {{ ex }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </p>
+                        {% endif %}
+                        </li>
+                    {% endfor %}
+                    </ol>
+                    </li>
+                {% endfor %}
+                </ol>
+    {% endfor %}
+{% endblock %}

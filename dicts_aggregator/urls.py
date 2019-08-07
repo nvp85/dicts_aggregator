@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from base_app.views import homepage, signup
+from base_app.views import homepage, signup, search_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,4 +25,5 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(template_name='home.html', extra_context={'next': 'home',}), name='logout'),
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name='login.html'), name='password_reset'),
     path('signup/', signup, name='signup'),
+    path('search/', search_view, name='search'),
 ]
