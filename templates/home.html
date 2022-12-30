@@ -2,25 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <title>Dicts aggregator</title>
 </head>
 <body>
-<h2>home page</h2>
-    <div id="content">
+    <section class="hero is-small is-primary mb-4">
+        <div class="hero-body">
+            <h2 class="title">Dictionaries aggregator</h2>
+        </div>
+    </section>
+
+    <div id="content" class="container">
+        <div class="columns">
         {% block content %}
             {% if user.is_authenticated %}
+                <div class="column">
                 <p>Welcome, {{ user.username }}. Thanks for logging in. <a href={% url "logout" %}>Log out</a>.</p>
                 <form method="post" action={% url "search" %}>
                     {% csrf_token %}
                     {{ search_form.as_p }}
                     <input type="submit" value="Search">
                 </form>
+                
                 {% block search_result %}
                 {% endblock %}
+                </div>
             {% else %}
                 <p>Welcome, new user. Please <a href={% url "login" %}>log in</a> or <a href={% url "signup" %}>sign up</a>. </p>
             {% endif %}
         {% endblock %}
+        </div>
     </div>
 </body>
 </html>
