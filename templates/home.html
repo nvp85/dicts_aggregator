@@ -18,15 +18,25 @@
         {% block content %}
             {% if user.is_authenticated %}
                 <div class="column">
-                <p>Welcome, {{ user.username }}. Thanks for logging in. <a href={% url "logout" %}>Log out</a>.</p>
-                <form method="post" action={% url "search" %}>
-                    {% csrf_token %}
-                    {{ search_form.as_p }}
-                    <input type="submit" value="Search">
-                </form>
-                
-                {% block search_result %}
-                {% endblock %}
+                    <p class="mb-4">Welcome, {{ user.username }}. Thanks for logging in. <a href={% url "logout" %}>Log out</a>.</p>
+                    <form method="post" action={% url "search" %} class="mb-4">
+                        {% csrf_token %}
+                        <div class="field has-addons">
+                            <label class="label" for="{{ search_form.word.id_for_label }}">Word</label>
+                            <div class="control">
+                              <input class="input" type="text" placeholder="Look up a word" id="{{ search_form.word.id_for_label }}" name="{{ search_form.word.name }}">
+                            </div>
+                            <div class="control">
+                                <input type="submit" value="Search" class="button is-primary">
+                            </div>
+                        </div>
+                        
+                    </form>
+                    <br>
+                    <div class="column">
+                    {% block search_result %}
+                    {% endblock %}
+                    </div>
                 </div>
             {% else %}
                 <p>Welcome, new user. Please <a href={% url "login" %}>log in</a> or <a href={% url "signup" %}>sign up</a>. </p>
