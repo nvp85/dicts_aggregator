@@ -7,33 +7,47 @@
     <title>Dicts aggregator</title>
 </head>
 <body>
-    <section class="hero is-small is-primary mb-4">
-        <div class="hero-body">
-            <h2 class="title">Dictionaries aggregator</h2>
-        </div>
-    </section>
-
     <div id="content" class="container">
-        <div class="columns">
+        <section class="hero is-small is-primary">
+            <div class="hero-body">
+                <h2 class="title">Dictionaries aggregator</h2>
+                <div class="navbar-menu">
+                    <div class="navbar-start">
+                      <!-- navbar items -->
+                    </div>
+                  
+                    <div class="navbar-end">
+                      <!-- navbar items -->
+                    </div>
+                  </div>
+            </div>
+        </section>
+        <div class="box">
         {% block content %}
             {% if user.is_authenticated %}
-                <div class="column">
+                <div>
                     <p class="mb-4">Welcome, {{ user.username }}. Thanks for logging in. <a href={% url "logout" %}>Log out</a>.</p>
-                    <form method="post" action={% url "search" %} class="mb-4">
+                    <form method="post" action={% url "search" %} class="">
                         {% csrf_token %}
-                        <div class="field has-addons">
-                            <label class="label" for="{{ search_form.word.id_for_label }}">Word</label>
-                            <div class="control">
-                              <input class="input" type="text" placeholder="Look up a word" id="{{ search_form.word.id_for_label }}" name="{{ search_form.word.name }}">
+                        <div class="field">
+                            <div class="label is-normal">
+                                <label class="label mb-4" for="{{ search_form.word.id_for_label }}">Word</label>
                             </div>
-                            <div class="control">
-                                <input type="submit" value="Search" class="button is-primary">
+                            <div class="field-body">
+                                <div class="field has-addons">
+                                    <p class="control">
+                                    <input class="input" type="text" placeholder="Look up a word" id="{{ search_form.word.id_for_label }}" name="{{ search_form.word.name }}">
+                                    </p>
+                                    
+                                    <p class="control">
+                                        <input type="submit" value="Search" class="button is-primary">
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                        
                     </form>
                     <br>
-                    <div class="column">
+                    <div>
                     {% block search_result %}
                     {% endblock %}
                     </div>
