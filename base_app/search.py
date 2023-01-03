@@ -3,6 +3,7 @@ from dataclasses import dataclass, field
 from typing import List
 from django.conf import settings
 import json
+from django.core.cache import cache
 
 
 @dataclass
@@ -41,10 +42,15 @@ class YandexDictionary:
             word = word.lower()
             url_ya = settings.YANDEX_API_URL
             params_ya = {'key': settings.YANDEX_API_KEY, 'lang': 'en-ru', 'text': word}
-            req = requests.get(url_ya, params=params_ya)
-            # result['yandex_code'] = req.status_code
-            if req.status_code == 200:
-                result = self.yandex_json_parser(req.json(), word)
+            cached = cache.get(word, version=2)
+            if cached is None:
+                req = requests.get(url_ya, params=params_ya)
+                # result['yandex_code'] = req.status_code
+                if req.status_code == 200:
+                    cache.add(word, req.json(), version=2)
+                    result = self.yandex_json_parser(req.json(), word)
+            else:
+                result = self.yandex_json_parser(cached, word)
         return result
 
     @staticmethod
@@ -86,10 +92,15 @@ class OxfordDictionary:
                 language_code=language_code,
                 word=word
             )
-            req = requests.get(url_oxford, headers={'app_id': settings.OXFORD_APP_ID, 'app_key': settings.OXFORD_APP_KEY})
-            #result['oxford_code'] = req.status_code
-            if req.status_code == 200:
-                result = self.oxford_json_parser(req.json())
+            cached = cache.get(word,version=1)
+            if cached is None:
+                req = requests.get(url_oxford, headers={'app_id': settings.OXFORD_APP_ID, 'app_key': settings.OXFORD_APP_KEY})
+                #result['oxford_code'] = req.status_code
+                if req.status_code == 200:
+                    cache.add(word, req.json(), version=1)
+                    result = self.oxford_json_parser(req.json())
+            else:
+                result = self.oxford_json_parser(cached)
         return result
 
     @staticmethod
