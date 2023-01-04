@@ -42,12 +42,12 @@ class YandexDictionary:
             word = word.lower()
             url_ya = settings.YANDEX_API_URL
             params_ya = {'key': settings.YANDEX_API_KEY, 'lang': 'en-ru', 'text': word}
-            cached = cache.get(word, version=2)
+            cached = cache.get('yandex:'+word)
             if cached is None:
                 req = requests.get(url_ya, params=params_ya)
                 # result['yandex_code'] = req.status_code
                 if req.status_code == 200:
-                    cache.add(word, req.json(), version=2)
+                    cache.add('yandex:'+word, req.json(), timeout=86400)
                     result = self.yandex_json_parser(req.json(), word)
             else:
                 result = self.yandex_json_parser(cached, word)
@@ -92,12 +92,12 @@ class OxfordDictionary:
                 language_code=language_code,
                 word=word
             )
-            cached = cache.get(word,version=1)
+            cached = cache.get('oxford:'+word)
             if cached is None:
                 req = requests.get(url_oxford, headers={'app_id': settings.OXFORD_APP_ID, 'app_key': settings.OXFORD_APP_KEY})
                 #result['oxford_code'] = req.status_code
                 if req.status_code == 200:
-                    cache.add(word, req.json(), version=1)
+                    cache.add('oxford:'+word, req.json(), timeout=86400)
                     result = self.oxford_json_parser(req.json())
             else:
                 result = self.oxford_json_parser(cached)
