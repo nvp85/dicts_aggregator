@@ -1,10 +1,36 @@
 {% extends 'home.html' %}
 
 {% block content %}
-  <h2>Sign up</h2>
-  <form method="post">
+  <h2 class="title">Sign up</h2>
+  <div class="columns">
+  <form method="post" class="column is-narrow">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Sign up</button>
+    <div class="field">
+      <label class="label" for="{{ form.username.id_for_label }}">{{ form.username.label_tag }}</label>
+      <div class="control">
+        {{ form.username.errors }}
+        <input id="{{ form.username.id_for_label }}" name="{{ form.username.name }}" class="input" type="text" required="">
+      </div>
+    </div>
+    <div class="field">
+        <label class="label" for="{{ form.password1.id_for_label }}">{{ form.password1.label_tag }}</label>
+        <p class="control">
+          {{ form.password1.errors }}
+          <input id="{{ form.password1.id_for_label }}" name="{{ form.password1.name }}" class="input" type="password">
+        </p>
+    </div>
+    <div class="field">
+        <label class="label" for="{{ form.password2.id_for_label }}">{{ form.password2.label_tag }}</label>
+        <p class="control">
+            {{ form.password2.errors }}
+            <input id="{{ form.password2.id_for_label }}" name="{{ form.password2.name }}" class="input" type="password">
+        </p>
+    </div>
+    <div class="field">
+      <div class="control">
+        <button type="submit" class="button is-primary">Sign up</button>
+      </div>
+    </div>
   </form>
+  </div>
 {% endblock %}
