@@ -18,7 +18,8 @@
             {% if user.is_authenticated %}
                 <div>
                     <p class="mb-4">Welcome, {{ user.username }}. Thanks for logging in. <a href={% url "logout" %}>Log out</a>.</p>
-                    <form method="post" action={% url "search" %} class="">
+                    <p>Available dictionaries: Oxford Dictionary and Yandex Eng-Rus dictionary.</p>
+                    <form method="post" action={% url "search" %} class="mt-4">
                         {% csrf_token %}
                         <div class="field">
                             <div class="label is-normal">
