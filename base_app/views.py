@@ -34,6 +34,7 @@ def search_view(request):
         search_form = SearchForm(request.POST)
         if search_form.is_valid():
             search_record = search_form.save(commit=False)
+            dicts = request.get['dicts']
             oxford = OxfordDictionary()
             yandex = YandexDictionary()
             oxford_result = oxford.search(search_record.word)
