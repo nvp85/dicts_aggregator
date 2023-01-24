@@ -18,7 +18,7 @@
             {% if user.is_authenticated %}
                 <div>
                     <p class="mb-4">Welcome, {{ user.username }}. Thanks for logging in. <a href={% url "logout" %}>Log out</a>.</p>
-                    <p>Available dictionaries: Oxford Dictionary and Yandex Eng-Rus dictionary.</p>
+                    <p>Available dictionaries:</p>
                     <form method="post" action={% url "search" %} class="mt-4">
                         {% csrf_token %}
                         <div class="field">
@@ -26,7 +26,7 @@
                         </div>
                         <div class="field">
                             <div class="label is-normal">
-                                <label class="label mb-4" for="{{ search_form.word.id_for_label }}">Word</label>
+                                <label class="label mb-4" for="{{ search_form.word.id_for_label }}">Word:</label>
                             </div>
                             <div class="field-body">
                                 <div class="field has-addons">

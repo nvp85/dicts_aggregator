@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 from django.urls import reverse
-from base_app.search import OxfordDictionary, YandexDictionary
+import base_app.search
 from base_app.models import SearchHistoryRecord
 from base_app.forms import SearchForm
 
@@ -34,16 +34,12 @@ def search_view(request):
         search_form = SearchForm(request.POST)
         if search_form.is_valid():
             search_record = search_form.save(commit=False)
-            dicts = request.get['dicts']
-            oxford = OxfordDictionary()
-            yandex = YandexDictionary()
-            oxford_result = oxford.search(search_record.word)
-            if oxford_result:
-                result.append(oxford_result)
-            yandex_result = yandex.search(search_record.word)
-            if yandex_result:
-                result.append(yandex_result)
-
+            dicts = search_form.cleaned_data['dicts']
+            for dict in dicts:
+                dict = getattr(base_app.search, dict+'Dictionary')()
+                dict_result = dict.search(search_record.word)
+                if dict_result:
+                    result.append(dict_result)
                 #form.save()
     else:
         search_form = SearchForm()

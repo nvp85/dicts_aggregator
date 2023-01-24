@@ -1,14 +1,14 @@
-from django.forms import ModelForm, ChoiceField
+from django.forms import ModelForm, MultipleChoiceField, CheckboxSelectMultiple
 from base_app.models import SearchHistoryRecord
 
 DICTS_CHOICES = (
-    ('yandex', 'Yandex Dictionary'),
-    ('oxford', 'Oxford Dictionary'),
+    ('Yandex', 'Yandex Dictionary'),
+    ('Oxford', 'Oxford Dictionary'),
 )
 
 
 class SearchForm(ModelForm):
-    dicts = ChoiceField(choices=DICTS_CHOICES)
+    dicts = MultipleChoiceField(choices=DICTS_CHOICES, widget=CheckboxSelectMultiple)
     class Meta:
         model = SearchHistoryRecord
         fields = ['word',]
