@@ -9,7 +9,9 @@ from base_app.forms import SearchForm
 
 def homepage(request):
     search_form = SearchForm()
-    return render(request, 'home.html', context={'search_form': search_form})
+    user = request.user
+    search_records = SearchHistoryRecord.objects.get(user=user)
+    return render(request, 'home.html', context={'search_form': search_form, 'search_records': search_records})
 
 
 def signup(request):
@@ -40,7 +42,9 @@ def search_view(request):
                 dict_result = dict.search(search_record.word)
                 if dict_result:
                     result.append(dict_result)
-                #form.save()
+            search_form.save()
     else:
         search_form = SearchForm()
-    return render(request, 'search.html', {'search_form': search_form, 'result': result})
+    user = request.user
+    search_records = SearchHistoryRecord.objects.get(user=user)
+    return render(request, 'search.html', {'search_form': search_form, 'result': result, 'search_records': search_records})
