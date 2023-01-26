@@ -10,7 +10,7 @@ from base_app.forms import SearchForm
 def homepage(request):
     search_form = SearchForm()
     user = request.user
-    search_records = SearchHistoryRecord.objects.get(user=user)
+    search_records = SearchHistoryRecord.objects.filter(user=user)
     return render(request, 'home.html', context={'search_form': search_form, 'search_records': search_records})
 
 
@@ -32,10 +32,12 @@ def signup(request):
 
 def search_view(request):
     result = []
+    user = request.user
     if request.POST:
         search_form = SearchForm(request.POST)
         if search_form.is_valid():
             search_record = search_form.save(commit=False)
+            search_record.user = user
             dicts = search_form.cleaned_data['dicts']
             for dict in dicts:
                 dict = getattr(base_app.search, dict+'Dictionary')()
@@ -45,6 +47,5 @@ def search_view(request):
             search_form.save()
     else:
         search_form = SearchForm()
-    user = request.user
-    search_records = SearchHistoryRecord.objects.get(user=user)
+    search_records = SearchHistoryRecord.objects.filter(user=user)
     return render(request, 'search.html', {'search_form': search_form, 'result': result, 'search_records': search_records})
