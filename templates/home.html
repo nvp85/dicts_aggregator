@@ -19,8 +19,8 @@
                 <div>
                     <p class="mb-4">Welcome, {{ user.username }}. Thanks for logging in. <a href={% url "logout" %}>Log out</a>.</p>
                     <p>Preveously looked up words: 
-                        {% for rec in search_records  %}
-                        {{ rec.word }}, 
+                        {% for word in search_records  %}
+                        {{ word.word }}, 
                         {% endfor%}
                     </p>
                     <p>Available dictionaries:</p>

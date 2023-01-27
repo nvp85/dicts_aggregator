@@ -10,7 +10,7 @@ from base_app.forms import SearchForm
 def homepage(request):
     search_form = SearchForm()
     user = request.user
-    search_records = SearchHistoryRecord.objects.filter(user=user)
+    search_records = SearchHistoryRecord.objects.filter(user=user).values('word')
     return render(request, 'home.html', context={'search_form': search_form, 'search_records': search_records})
 
 
@@ -47,5 +47,5 @@ def search_view(request):
             search_form.save()
     else:
         search_form = SearchForm()
-    search_records = SearchHistoryRecord.objects.filter(user=user)
+    search_records = SearchHistoryRecord.objects.filter(user=user).values('word')
     return render(request, 'search.html', {'search_form': search_form, 'result': result, 'search_records': search_records})
