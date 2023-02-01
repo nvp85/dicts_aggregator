@@ -14,7 +14,7 @@ class SearchHistoryRecord(models.Model):
         null=False,
     )
     count = models.IntegerField(
-        default=0,
+        default=1,
     )
     last_date = models.DateTimeField(
         auto_now=True,

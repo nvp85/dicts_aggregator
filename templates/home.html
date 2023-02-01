@@ -16,13 +16,10 @@
         <div class="box">
         {% block content %}
             {% if user.is_authenticated %}
-                <div>
+            <div class="columns">
+                <div class="column is-three-quarters">
                     <p class="mb-4">Welcome, {{ user.username }}. Thanks for logging in. <a href={% url "logout" %}>Log out</a>.</p>
-                    <p>Preveously looked up words: 
-                        {% for word in search_records  %}
-                        {{ word.word }}, 
-                        {% endfor%}
-                    </p>
+                    
                     <p>Available dictionaries:</p>
                     <form method="post" action={% url "search" %} class="mt-4">
                         {% csrf_token %}
@@ -52,6 +49,16 @@
                     {% endblock %}
                     </div>
                 </div>
+                <div class="column">
+                    <p>Preveously looked up words: 
+                        <ul>
+                        {% for word in search_records  %}
+                        <li>{{ word.word }}</li> 
+                        {% endfor%}
+                        </ul>
+                    </p>
+                </div>
+            </div>
             {% else %}
                 <p>Welcome, new user. Please <a href={% url "login" %}>log in</a> or <a href={% url "signup" %}>sign up</a>. </p>
             {% endif %}
