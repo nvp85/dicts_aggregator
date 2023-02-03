@@ -24,11 +24,13 @@
                     <form method="post" action={% url "search" %} class="mt-4">
                         {% csrf_token %}
                         <div class="field">
+                            {{ search_form.dicts.errors }}
                             {{ search_form.dicts }}
                         </div>
                         <div class="field">
                             <div class="label is-normal">
                                 <label class="label mb-4" for="{{ search_form.word.id_for_label }}">Word:</label>
+                                {{ search_form.word.errors }}
                             </div>
                             <div class="field-body">
                                 <div class="field has-addons">
@@ -50,13 +52,12 @@
                     </div>
                 </div>
                 <div class="column">
-                    <p>Preveously looked up words: 
+                    <p>Preveously looked up words:</p> 
                         <ul>
                         {% for word in search_records  %}
                         <li>{{ word.word }}</li> 
                         {% endfor%}
                         </ul>
-                    </p>
                 </div>
             </div>
             {% else %}

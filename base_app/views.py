@@ -55,5 +55,5 @@ def search_view(request):
                 search_form.save()
     else:
         search_form = SearchForm()
-    search_records = SearchHistoryRecord.objects.filter(user=user).values('word')
+    search_records = SearchHistoryRecord.objects.filter(user=user).order_by('last_date').values('word')
     return render(request, 'search.html', {'search_form': search_form, 'result': result, 'search_records': search_records})

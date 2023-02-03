@@ -8,7 +8,7 @@ DICTS_CHOICES = (
 
 
 class SearchForm(ModelForm):
-    dicts = MultipleChoiceField(choices=DICTS_CHOICES, widget=CheckboxSelectMultiple)
+    dicts = MultipleChoiceField(choices=DICTS_CHOICES, widget=CheckboxSelectMultiple,required=True)
     class Meta:
         model = SearchHistoryRecord
         fields = ['word',]
