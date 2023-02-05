@@ -11,7 +11,7 @@ from base_app.forms import SearchForm
 def homepage(request):
     search_form = SearchForm()
     user = request.user
-    search_records = SearchHistoryRecord.objects.filter(user=user).values('word')
+    search_records = SearchHistoryRecord.objects.filter(user=user).order_by('-last_date').values('word')[:10]
     return render(request, 'home.html', context={'search_form': search_form, 'search_records': search_records})
 
 
@@ -48,6 +48,7 @@ def search_view(request):
             with transaction.atomic():
                 old_record = SearchHistoryRecord.objects.select_for_update().filter(word=search_record.word, user=user)[:1]
                 if old_record:
+                    old_record = old_record.get()
                     old_record.count = 1 + old_record.count
                     old_record.save()
                 else:
