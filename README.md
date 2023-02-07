@@ -26,6 +26,7 @@ DEBUG=on
 SECRET_KEY=your_secret_key
 DATABASE_URL=postgres://dicts_aggregator@127.0.0.1:5432/dicts_aggregator
 YANDEX_API_KEY=api_key
+OXFORD_APP_ID=api_id
 OXFORD_APP_ID=api_key
 ```
 

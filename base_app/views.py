@@ -11,7 +11,10 @@ from base_app.forms import SearchForm
 def homepage(request):
     search_form = SearchForm()
     user = request.user
-    search_records = SearchHistoryRecord.objects.filter(user=user).order_by('-last_date').values('word')[:10]
+    if user.is_authenticated:
+        search_records = SearchHistoryRecord.objects.filter(user=user).order_by('-last_date').values('word')[:10]
+    else:
+        search_records = []
     return render(request, 'home.html', context={'search_form': search_form, 'search_records': search_records})
 
 
