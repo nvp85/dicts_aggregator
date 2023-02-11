@@ -10,7 +10,14 @@
     <div id="content" class="container">
         <section class="hero is-small is-primary">
             <div class="hero-body">
-                <h2 class="title"><a href="{% url 'home' %}">Dictionaries aggregator</a></h2>
+                <nav class="level">
+                    <div class="level-left">
+                    <h2 class="title"><a href="{% url 'home' %}">Dictionaries aggregator</a></h2>
+                    </div>
+                    <div class="level-right">
+                        <p>Welcome, {{ user.username }}. <a href={% url "logout" %}>Log out</a></p>
+                    </div>
+                </nav>
             </div>
         </section>
         <div class="box">
@@ -21,7 +28,7 @@
                     {% if user.is_authenticated %}
                     <p class="mb-4">Welcome, {{ user.username }}. Thanks for logging in. <a href={% url "logout" %}>Log out</a>.</p>
                     {% endif %}
-                    <p>Available dictionaries:</p>
+                    <p class="has-text-weight-bold">Available dictionaries:</p>
                     <form method="post" action={% url "search" %} class="mt-4">
                         {% csrf_token %}
                         <div class="field">
@@ -54,7 +61,7 @@
                 </div>
                 <div class="column">
                     {% if user.is_authenticated %}
-                    <p>Preveously looked up words:</p> 
+                    <p class="has-text-weight-bold">Preveously looked up words:</p> 
                         <ul>
                         {% for word in search_records  %}
                         <li>{{ word.word }}</li> 
