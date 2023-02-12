@@ -138,3 +138,6 @@ CACHES = {
         'LOCATION': 'dict_cache_table',
     }
 }
+
+LOGIN_REDIRECT_URL = "home"
+LOGOUT_REDIRECT_URL = "home"

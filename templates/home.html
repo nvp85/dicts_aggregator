@@ -15,7 +15,11 @@
                     <h2 class="title"><a href="{% url 'home' %}">Dictionaries aggregator</a></h2>
                     </div>
                     <div class="level-right">
-                        <p>Welcome, {{ user.username }}. <a href={% url "logout" %}>Log out</a></p>
+                        {% if user.is_authenticated %}
+                        <p>Signed in as {{ user.username }}. <a href={% url "logout" %}>Log out</a></p>
+                        {% else %}
+                        <p>You are not <a href={% url "login" %}>logged in</a></p>
+                        {% endif %}
                     </div>
                 </nav>
             </div>
@@ -24,14 +28,11 @@
         {% block content %}
             
             <div class="columns">
-                <div class="column is-three-quarters">
-                    {% if user.is_authenticated %}
-                    <p class="mb-4">Welcome, {{ user.username }}. Thanks for logging in. <a href={% url "logout" %}>Log out</a>.</p>
-                    {% endif %}
-                    <p class="has-text-weight-bold">Available dictionaries:</p>
-                    <form method="post" action={% url "search" %} class="mt-4">
+                <div class="column is-three-quarters">                    
+                    <form method="post" action={% url "search" %}>
                         {% csrf_token %}
                         <div class="field">
+                            <label class="label is-normal">Available dictionaries:</label>
                             {{ search_form.dicts.errors }}
                             {{ search_form.dicts }}
                         </div>
@@ -45,7 +46,6 @@
                                     <p class="control">
                                     <input class="input" type="text" placeholder="Look up a word" id="{{ search_form.word.id_for_label }}" name="{{ search_form.word.name }}">
                                     </p>
-                                    
                                     <p class="control">
                                         <input type="submit" value="Search" class="button is-primary">
                                     </p>
@@ -61,7 +61,7 @@
                 </div>
                 <div class="column">
                     {% if user.is_authenticated %}
-                    <p class="has-text-weight-bold">Preveously looked up words:</p> 
+                        <p class="has-text-weight-bold">Preveously looked up words:</p> 
                         <ul>
                         {% for word in search_records  %}
                         <li>{{ word.word }}</li> 
@@ -71,9 +71,7 @@
                         <p>To track your search history please <a href={% url "login" %}>log in</a> or <a href={% url "signup" %}>sign up</a>.</p>
                     {% endif %}
                 </div>
-            </div>
-
-                
+            </div>                
         {% endblock %}
         </div>
     </div>

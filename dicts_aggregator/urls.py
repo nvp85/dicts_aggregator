@@ -22,7 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('home/', homepage, name='home'),
     path('login/', auth_views.LoginView.as_view(template_name='login.html', extra_context={'next': 'home',}), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(template_name='home.html', extra_context={'next': 'home',}), name='logout'),
+    path('logout/', auth_views.LogoutView.as_view(template_name='home.html'), name='logout'),
     #path('password_reset/', auth_views.PasswordResetView.as_view(template_name='login.html'), name='password_reset'),
     path('signup/', signup, name='signup'),
     path('search/', search_view, name='search'),
