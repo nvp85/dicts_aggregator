@@ -33,12 +33,12 @@
                         {% csrf_token %}
                         <div class="field">
                             <label class="label is-normal">Available dictionaries:</label>
-                            {{ search_form.dicts.errors }}
+                            <div class="has-text-danger">{{ search_form.dicts.errors }}</div>
                             {{ search_form.dicts }}
                         </div>
                         <div class="field">
-                            <div class="label is-normal">
-                                <label class="label mb-4" for="{{ search_form.word.id_for_label }}">Word:</label>
+                            <label class="label" for="{{ search_form.word.id_for_label }}">Word:</label>
+                            <div class="has-text-danger">
                                 {{ search_form.word.errors }}
                             </div>
                             <div class="field-body">
@@ -68,7 +68,7 @@
                         {% endfor%}
                         </ul>
                     {% else %}
-                        <p>To track your search history please <a href={% url "login" %}>log in</a> or <a href={% url "signup" %}>sign up</a>.</p>
+                        <p>To see your search history please <a href={% url "login" %}>log in</a> or <a href={% url "signup" %}>sign up</a>.</p>
                     {% endif %}
                 </div>
             </div>                
