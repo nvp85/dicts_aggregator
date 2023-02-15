@@ -26,7 +26,6 @@
         </section>
         <div class="box">
         {% block content %}
-            
             <div class="columns">
                 <div class="column is-three-quarters">                    
                     <form method="post" action={% url "search" %}>
@@ -34,14 +33,16 @@
                         <div class="field">
                             <label class="label is-normal">Available dictionaries:</label>
                             <div class="has-text-danger">{{ search_form.dicts.errors }}</div>
+                            <div class="control">
                             {{ search_form.dicts }}
+                            </div>
                         </div>
                         <div class="field">
                             <label class="label" for="{{ search_form.word.id_for_label }}">Word:</label>
                             <div class="has-text-danger">
                                 {{ search_form.word.errors }}
                             </div>
-                            <div class="field-body">
+                            <div class="control">
                                 <div class="field has-addons">
                                     <p class="control">
                                     <input class="input" type="text" placeholder="Look up a word" id="{{ search_form.word.id_for_label }}" name="{{ search_form.word.name }}">
