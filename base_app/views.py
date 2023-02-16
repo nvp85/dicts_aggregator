@@ -41,12 +41,7 @@ def search_view(request):
         search_form = SearchForm(request.POST)
         if search_form.is_valid():
             search_record = search_form.save(commit=False)
-            dicts = search_form.cleaned_data['dicts']
-            for dict in dicts:
-                dict = getattr(base_app.search, dict+'Dictionary')()
-                dict_result = dict.search(search_record.word)
-                if dict_result:
-                    result.append(dict_result)
+            result = search_form.search()
             if user.is_authenticated:
                 with transaction.atomic():
                     old_record = SearchHistoryRecord.objects.select_for_update().filter(word=search_record.word, user=user)[:1]

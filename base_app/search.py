@@ -18,6 +18,7 @@ class Pronunciation:
     transcription: str = ''
     dialects: str = ''
 
+
 @dataclass
 class EntriesGroup:
     # Group of Entries by part of speech.
@@ -47,7 +48,7 @@ class YandexDictionary:
                 req = requests.get(url_ya, params=params_ya)
                 # result['yandex_code'] = req.status_code
                 if req.status_code == 200:
-                    cache.add('yandex:'+word, req.json(), timeout=86400)
+                    cache.add('yandex:'+word, req.json(), timeout=None)
                     result = self.yandex_json_parser(req.json(), word)
             else:
                 result = self.yandex_json_parser(cached, word)
@@ -97,7 +98,7 @@ class OxfordDictionary:
                 req = requests.get(url_oxford, headers={'app_id': settings.OXFORD_APP_ID, 'app_key': settings.OXFORD_APP_KEY})
                 #result['oxford_code'] = req.status_code
                 if req.status_code == 200:
-                    cache.add('oxford:'+word, req.json(), timeout=86400)
+                    cache.add('oxford:'+word, req.json(), timeout=None)
                     result = self.oxford_json_parser(req.json())
             else:
                 result = self.oxford_json_parser(cached)
