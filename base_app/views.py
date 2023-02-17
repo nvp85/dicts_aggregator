@@ -1,9 +1,8 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 from django.urls import reverse
 from django.db import transaction   
-import base_app.search
 from base_app.models import SearchHistoryRecord
 from base_app.forms import SearchForm
 
@@ -11,10 +10,9 @@ from base_app.forms import SearchForm
 def homepage(request):
     search_form = SearchForm()
     user = request.user
+    search_records = []
     if user.is_authenticated:
-        search_records = SearchHistoryRecord.objects.filter(user=user).order_by('-last_date').values('word')[:10]
-    else:
-        search_records = []
+        search_records = SearchHistoryRecord.objects.filter(user=user).order_by('-last_date').values('word')[:10]        
     return render(request, 'home.html', context={'search_form': search_form, 'search_records': search_records})
 
 
@@ -40,7 +38,6 @@ def search_view(request):
     if request.POST:
         search_form = SearchForm(request.POST)
         if search_form.is_valid():
-            search_record = search_form.save(commit=False)
             result = search_form.search()
             if user.is_authenticated:
                 with transaction.atomic():
@@ -50,12 +47,12 @@ def search_view(request):
                         old_record.count = 1 + old_record.count
                         old_record.save()
                     else:
+                        search_record = search_form.save(commit=False)
                         search_record.user = user
                         search_form.save()
     else:
         search_form = SearchForm()
+    search_records = []
     if user.is_authenticated:
-        search_records = SearchHistoryRecord.objects.filter(user=user).order_by('-last_date').values('word')[:10]
-    else:
-        search_records = []
+        search_records = SearchHistoryRecord.objects.filter(user=user).order_by('-last_date').values('word')[:10]        
     return render(request, 'search.html', {'search_form': search_form, 'result': result, 'search_records': search_records})
