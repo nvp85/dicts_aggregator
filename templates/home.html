@@ -65,7 +65,7 @@
                         <p class="has-text-weight-bold">Preveously looked up words:</p> 
                         <ul>
                         {% for word in search_records  %}
-                        <li>{{ word.word }}</li> 
+                        <li><a href="{% url 'search'  %}?word={{ word.word }}" >{{ word.word }}</a></li> 
                         {% endfor%}
                         </ul>
                     {% else %}

@@ -39,9 +39,10 @@ def search_view(request):
         search_form = SearchForm(request.POST)
         if search_form.is_valid():
             result = search_form.search()
+            word = search_form.cleaned_data['word']
             if user.is_authenticated:
                 with transaction.atomic():
-                    old_record = SearchHistoryRecord.objects.select_for_update().filter(word=search_record.word, user=user)[:1]
+                    old_record = SearchHistoryRecord.objects.select_for_update().filter(word=word, user=user)[:1]
                     if old_record:
                         old_record = old_record.get()
                         old_record.count = 1 + old_record.count
