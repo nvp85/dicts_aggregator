@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.db import transaction   
 from base_app.models import SearchHistoryRecord
 from base_app.forms import SearchForm
+from base_app.search import search
 
 
 def homepage(request):
@@ -35,24 +36,29 @@ def signup(request):
 def search_view(request):
     result = []
     user = request.user
-    if request.POST:
+    word = None
+    search_form = SearchForm()
+    if request.method == 'GET' and 'word' in request.GET:
+        word = request.GET.get('word')
+        dicts = ['Yandex', 'Oxford']
+        search_form
+    elif request.POST:
         search_form = SearchForm(request.POST)
         if search_form.is_valid():
-            result = search_form.search()
             word = search_form.cleaned_data['word']
-            if user.is_authenticated:
-                with transaction.atomic():
-                    old_record = SearchHistoryRecord.objects.select_for_update().filter(word=word, user=user)[:1]
-                    if old_record:
-                        old_record = old_record.get()
-                        old_record.count = 1 + old_record.count
-                        old_record.save()
-                    else:
-                        search_record = search_form.save(commit=False)
-                        search_record.user = user
-                        search_form.save()
-    else:
-        search_form = SearchForm()
+            dicts = search_form.cleaned_data['dicts']
+    if (word is not None):
+        result = search(word, dicts)
+        if user.is_authenticated:
+            with transaction.atomic():
+                old_record = SearchHistoryRecord.objects.select_for_update().filter(word=word, user=user)[:1]
+                if old_record:
+                    old_record = old_record.get()
+                    old_record.count = 1 + old_record.count
+                    old_record.save()
+                else:
+                    search_record = SearchHistoryRecord.objects.create(word=word,user=user)
+                    search_record.save()
     search_records = []
     if user.is_authenticated:
         search_records = SearchHistoryRecord.objects.filter(user=user).order_by('-last_date').values('word')[:10]        

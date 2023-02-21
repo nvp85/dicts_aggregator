@@ -137,3 +137,14 @@ class OxfordDictionary:
                 result.groups.append(group)
         return result
 
+def search(word, dicts):
+    result = []
+    func = {
+    'Yandex': YandexDictionary,
+    'Oxford': OxfordDictionary,
+    }
+    for dict in dicts:
+        dict_result = func[dict]().search(word)
+        if dict_result:
+            result.append(dict_result)
+    return result
