@@ -41,7 +41,7 @@ def search_view(request):
     if request.method == 'GET' and 'word' in request.GET:
         word = request.GET.get('word')
         dicts = ['Yandex', 'Oxford']
-        search_form
+        search_form.fields['dicts'].initial = dicts
     elif request.POST:
         search_form = SearchForm(request.POST)
         if search_form.is_valid():
