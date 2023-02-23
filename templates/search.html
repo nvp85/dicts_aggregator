@@ -1,11 +1,12 @@
 {% extends "home.html" %}
 
 {% block search_result %}
-    {% for article in result %}
+    {% for article in result.result %}
         <div class="pl-4">
         <br>
         <h3 class="title is-5">{{ article.dictionary }}</h3>
         <h4 class="subtitle is-5">Word: {{ article.word }}</h4>
+        <p>{{ article.error }}</p>
                 <ol>
                 {% for group in article.groups %}
                     <li>

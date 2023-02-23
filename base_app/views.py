@@ -47,9 +47,9 @@ def search_view(request):
         if search_form.is_valid():
             word = search_form.cleaned_data['word']
             dicts = search_form.cleaned_data['dicts']
-    if (word is not None):
+    if word is not None:
         result = search(word, dicts)
-        if user.is_authenticated:
+        if user.is_authenticated and result.get('success', False):
             with transaction.atomic():
                 old_record = SearchHistoryRecord.objects.select_for_update().filter(word=word, user=user)[:1]
                 if old_record:
@@ -63,3 +63,5 @@ def search_view(request):
     if user.is_authenticated:
         search_records = SearchHistoryRecord.objects.filter(user=user).order_by('-last_date').values('word')[:10]        
     return render(request, 'search.html', {'search_form': search_form, 'result': result, 'search_records': search_records})
+#TODO: if the word is not present in dicts, show a corresponding message
+#TODO: we dont use the modelform feature so the form should be a simple form

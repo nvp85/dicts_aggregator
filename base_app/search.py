@@ -48,8 +48,14 @@ class YandexDictionary:
                 req = requests.get(url_ya, params=params_ya)
                 # result['yandex_code'] = req.status_code
                 if req.status_code == 200:
-                    cache.add('yandex:'+word, req.json(), timeout=None)
-                    result = self.yandex_json_parser(req.json(), word)
+                    data = req.json()
+                    cache.add('yandex:'+word, data, timeout=None)
+                    result = self.yandex_json_parser(data, word)
+                else:
+                    result = {}
+                    result['dictionary'] = 'The Yandex Dictionary'
+                    result['word'] = word
+                    result['error'] = data.get('error', 'Something went wrong.')
             else:
                 result = self.yandex_json_parser(cached, word)
         return result
@@ -96,10 +102,16 @@ class OxfordDictionary:
             cached = cache.get('oxford:'+word)
             if cached is None:
                 req = requests.get(url_oxford, headers={'app_id': settings.OXFORD_APP_ID, 'app_key': settings.OXFORD_APP_KEY})
+                data = req.json()
                 #result['oxford_code'] = req.status_code
                 if req.status_code == 200:
-                    cache.add('oxford:'+word, req.json(), timeout=None)
-                    result = self.oxford_json_parser(req.json())
+                    cache.add('oxford:'+word, data, timeout=None)
+                    result = self.oxford_json_parser(data)
+                else:
+                    result = {}
+                    result['dictionary'] = 'The Oxford Dictionary'
+                    result['word'] = word
+                    result['error'] = data.get('error', "Sorry! The Oxford API is currently unavailable.")
             else:
                 result = self.oxford_json_parser(cached)
         return result
@@ -138,13 +150,14 @@ class OxfordDictionary:
         return result
 
 def search(word, dicts):
-    result = []
+    result = {'success': False, 'result':[]}
     func = {
     'Yandex': YandexDictionary,
     'Oxford': OxfordDictionary,
     }
     for dict in dicts:
         dict_result = func[dict]().search(word)
-        if dict_result:
-            result.append(dict_result)
+        if isinstance(dict_result, Article):
+            result['success'] = True
+        result['result'].append(dict_result)
     return result
