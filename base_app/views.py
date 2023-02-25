@@ -63,5 +63,5 @@ def search_view(request):
     if user.is_authenticated:
         search_records = SearchHistoryRecord.objects.filter(user=user).order_by('-last_date').values('word')[:10]        
     return render(request, 'search.html', {'search_form': search_form, 'result': result, 'search_records': search_records})
-#TODO: if the word is not present in dicts, show a corresponding message
+
 #TODO: we dont use the modelform feature so the form should be a simple form

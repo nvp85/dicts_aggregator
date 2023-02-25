@@ -47,15 +47,22 @@ class YandexDictionary:
             if cached is None:
                 req = requests.get(url_ya, params=params_ya)
                 # result['yandex_code'] = req.status_code
-                if req.status_code == 200:
+                if req.status_code == 200 and req.json().get('def', False):
                     data = req.json()
                     cache.add('yandex:'+word, data, timeout=None)
                     result = self.yandex_json_parser(data, word)
                 else:
+                    err_msgs = {
+                        200: "No entry found.",
+                        401: "Invalid API key.",
+                        402: "This API key has been blocked.",
+                        403: "Exceeded the daily limit on the number of requests.",
+                        413: "The text size exceeds the maximum."
+                    }
                     result = {}
                     result['dictionary'] = 'The Yandex Dictionary'
                     result['word'] = word
-                    result['error'] = data.get('error', 'Something went wrong.')
+                    result['error'] = err_msgs.get(req.status_code, 'Sorry! The Yandex API is currently unavailable.')
             else:
                 result = self.yandex_json_parser(cached, word)
         return result
