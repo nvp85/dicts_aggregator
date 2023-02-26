@@ -1,5 +1,5 @@
-from django.forms import ModelForm, MultipleChoiceField, CheckboxSelectMultiple
-from base_app.models import SearchHistoryRecord
+from django.forms import Form, MultipleChoiceField, CheckboxSelectMultiple, CharField
+
 
 DICTS_CHOICES = (
     ('Yandex', 'Yandex Dictionary'),
@@ -7,10 +7,7 @@ DICTS_CHOICES = (
 )
 
 
-class SearchForm(ModelForm):
+class SearchForm(Form):
     dicts = MultipleChoiceField(choices=DICTS_CHOICES, widget=CheckboxSelectMultiple,required=True)
-
-    class Meta:
-        model = SearchHistoryRecord
-        fields = ['word',]
+    word = CharField(required=True, max_length=30)
 

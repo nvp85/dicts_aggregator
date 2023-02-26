@@ -64,4 +64,3 @@ def search_view(request):
         search_records = SearchHistoryRecord.objects.filter(user=user).order_by('-last_date').values('word')[:10]        
     return render(request, 'search.html', {'search_form': search_form, 'result': result, 'search_records': search_records})
 
-#TODO: we dont use the modelform feature so the form should be a simple form
