@@ -1,6 +1,6 @@
 # dicts_aggregator
 
-It's a web application that provides a unified interface to lookup words in several different online dictionaries using their APIs. Currently it's oxford and yandex dictionaries.
+It's a web application that provides a unified interface for word lookup across multiple online dictionaries, using their APIs. Currently, it supports Oxford and Yandex dictionaries. Crafted with Django and powered by PostgreSQL for my own use as a language learning tool.
 
 ## Techmologies
 Python 3.7+
@@ -10,7 +10,7 @@ Django 2.2
 ## Launch
 Prerequisites: Postgresql running on the port 5432 (default port).
 
-To run this project locally implement following steps:
+To run this project locally implement the following steps:
 
 * Clone the repository
 
@@ -20,7 +20,7 @@ To run this project locally implement following steps:
 
 * Create a database "dicts_aggregator" and a role "dicts_aggregator" with the login option.
 
-* The project uses the package django-environ to separate secrets from the code. Generate new secret key. Create .env file and put the secret key and your postgres credentials in it. Exemplary content of an .env file:
+* The project uses the package django-environ to separate secrets from the code. Generate a new secret key. Create .env file and put the secret key and your Postgres credentials in it. Exemplary content of an .env file:
 ```
 DEBUG=on
 SECRET_KEY=your_secret_key
