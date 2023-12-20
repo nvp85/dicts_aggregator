@@ -1,8 +1,19 @@
 {% extends "home.html" %}
 
 {% block search_result %}
+    <div class="tabs is-toggle">
+        <ul>
+            {% for article in result.result %}
+        <li class="tab" onclick="openTab('{{ forloop.counter }}')" id="tab{{ forloop.counter }}">
+            <a>
+            <span>{{ article.dictionary }}</span>
+            </a>
+        </li>
+            {% endfor %}
+        </ul>
+    </div>
     {% for article in result.result %}
-        <div class="pl-4">
+        <div class="tab-content" id="{{ forloop.counter }}" style="display:none">
         <br>
         <h3 class="title is-5">{{ article.dictionary }}</h3>
         <h4 class="subtitle is-5">Word: {{ article.word }}</h4>
@@ -44,4 +55,24 @@
                 </ol>
         </div>
     {% endfor %}
+    <script>
+        activeTab = document.getElementById('tab1')
+        activeContent = document.getElementById('1')
+        activeTab.className = activeTab.className + " is-active"
+        activeContent.style.display = "block"
+        function openTab(tabId) {
+            x = document.getElementsByClassName("tab-content");
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none";
+            };
+            y = document.getElementsByClassName("tab");
+            for (i = 0; i < y.length; i++) {
+                y[i].className = "tab";
+            };
+            activeTab = document.getElementById('tab'+tabId);
+            activeTab.className = activeTab.className + " is-active";
+            activeContent = document.getElementById(tabId);
+            activeContent.style.display = "block";
+        }
+    </script>
 {% endblock %}
