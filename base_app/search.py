@@ -147,7 +147,9 @@ class OxfordDictionary:
                         e.content = sense.get('definitions')
                         for example in sense.get('examples', []):
                             e.examples.append(example.get('text'))
-                        group.entries.append(e)
+                        e.synonyms = [syn['text'] for syn in sense.get('synonyms',[])]
+                        if e.content is not None:
+                            group.entries.append(e)
                     for pronunciation in entry.get('pronunciations', []):
                         dialects = ', '.join(pronunciation.get('dialects'))
                         transcription = pronunciation.get('phoneticSpelling')
