@@ -1,7 +1,7 @@
 {% extends "home.html" %}
 
 {% block search_result %}
-    <div class="tabs is-toggle">
+    <div class="tabs is-boxed">
         <ul>
             {% for article in result.result %}
         <li class="tab" onclick="openTab('{{ forloop.counter }}')" id="tab{{ forloop.counter }}">

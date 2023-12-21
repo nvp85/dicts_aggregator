@@ -158,11 +158,73 @@ class OxfordDictionary:
                 result.groups.append(group)
         return result
 
+class FreeDictionary:
+
+    def search(self, word=None):
+        result = None
+        if word:
+            word = word.lower()
+            url_free_dict = '{base_url}{endpoint}/{language_code}/{word}'
+            endpoint = 'entries'
+            language_code = 'en'
+
+            url_free_dict = url_free_dict.format(
+                base_url=settings.FREEDICT_API_URL,
+                endpoint=endpoint,
+                language_code=language_code,
+                word=word
+            )
+            cached = cache.get('free_dict:'+word)
+            if cached is None:
+                req = requests.get(url_free_dict)
+                data = req.json()
+                
+                if req.status_code == 200:
+                    cache.add('free_dict:'+word, data, timeout=None)
+                    result = self.free_dict_json_parser(data, word)
+                else:
+                    result = {}
+                    result['dictionary'] = 'The Free Dictionary'
+                    result['word'] = word
+                    result['error'] = data.get('title', "Sorry! The API is currently unavailable.")
+            else:
+                result = self.free_dict_json_parser(cached, word)
+        return result
+    
+    @staticmethod
+    def free_dict_json_parser(free_dict_json, word):
+        # Takes a free dictionary json as a dict and return an Article object.
+        result = Article()
+        result.word = word
+        result.dictionary = 'Free Dictionary'
+        for item in free_dict_json:
+            group_word = item.get('word')
+            group_pronunciations = []
+            for pronunciation in item.get('phonetics',[]):
+                transcription = pronunciation.get('text')
+                p = Pronunciation(transcription=transcription)
+                group_pronunciations.append(p)
+            for entry_group in item.get('meanings', []):
+                group = EntriesGroup()
+                group.word = group_word
+                group.pronunciations = group_pronunciations
+                group.part_of_speech = entry_group.get('partOfSpeech','')
+                for definition in entry_group.get('definitions', []):
+                    e = Entry()
+                    e.content = [definition.get('definition')]
+                    e.examples.append(definition.get('example'))
+                    e.synonyms = definition.get('synonyms',[])
+                    if e.content is not None:
+                        group.entries.append(e)
+                result.groups.append(group)
+        return result
+    
 def search(word, dicts):
     result = {'success': False, 'result':[]}
     func = {
     'Yandex': YandexDictionary,
     'Oxford': OxfordDictionary,
+    'free_dict': FreeDictionary,
     }
     for dict in dicts:
         dict_result = func[dict]().search(word)

@@ -4,6 +4,7 @@ from django.forms import Form, MultipleChoiceField, CheckboxSelectMultiple, Char
 DICTS_CHOICES = (
     ('Yandex', 'Yandex Dictionary'),
     ('Oxford', 'Oxford Dictionary'),
+    ('free_dict', 'Free Dictionary')
 )
 
 

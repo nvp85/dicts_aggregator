@@ -29,12 +29,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('SECRET_KEY')
 
-# Dictionaries API keys
+# Dictionaries URLs and API keys
 YANDEX_API_KEY = env('YANDEX_API_KEY', default='')
 YANDEX_API_URL = 'https://dictionary.yandex.net/api/v1/dicservice.json/lookup'
 OXFORD_APP_ID = env('OXFORD_APP_ID', default='')
 OXFORD_APP_KEY = env('OXFORD_APP_KEY', default='')
 OXFORD_API_URL = 'https://od-api.oxforddictionaries.com/api/v2/'
+FREEDICT_API_URL = 'https://api.dictionaryapi.dev/api/v2/'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DEBUG', default=False)

@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login
 from django.urls import reverse
 from django.db import transaction   
 from base_app.models import SearchHistoryRecord
-from base_app.forms import SearchForm
+from base_app.forms import SearchForm, DICTS_CHOICES
 from base_app.search import search
 
 
@@ -40,7 +40,7 @@ def search_view(request):
     search_form = SearchForm()
     if request.method == 'GET' and 'word' in request.GET:
         word = request.GET.get('word')
-        dicts = ['Yandex', 'Oxford']
+        dicts = [d[0] for d in DICTS_CHOICES]
         search_form.fields['dicts'].initial = dicts
     elif request.POST:
         search_form = SearchForm(request.POST)
