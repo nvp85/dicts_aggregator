@@ -1,10 +1,10 @@
 # dicts_aggregator
 
-It's a web application that provides a unified interface for word lookup across multiple online dictionaries, using their APIs. Currently, it supports Oxford and Yandex dictionaries. Crafted with Django and powered by PostgreSQL for my own use as a language learning tool.
+It's a web application that provides a unified interface for word lookup across multiple online dictionaries, using their APIs. Currently, it supports 3 dictionaries: Oxford, Yandex, and Free Dictionary. Crafted with Django and powered by PostgreSQL for my own use as a language learning tool.
 
 ## Techmologies
 Python 3.7+
-Django 2.2
+Django 4.2
 
 
 ## Launch
