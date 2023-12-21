@@ -212,7 +212,8 @@ class FreeDictionary:
                 for definition in entry_group.get('definitions', []):
                     e = Entry()
                     e.content = [definition.get('definition')]
-                    e.examples.append(definition.get('example'))
+                    if definition.get('example'):
+                        e.examples.append(definition.get('example'))
                     e.synonyms = definition.get('synonyms',[])
                     if e.content is not None:
                         group.entries.append(e)
