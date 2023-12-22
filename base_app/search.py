@@ -202,8 +202,9 @@ class FreeDictionary:
             group_pronunciations = []
             for pronunciation in item.get('phonetics',[]):
                 transcription = pronunciation.get('text')
-                p = Pronunciation(transcription=transcription)
-                group_pronunciations.append(p)
+                if transcription is not None:
+                    p = Pronunciation(transcription=transcription)
+                    group_pronunciations.append(p)
             for entry_group in item.get('meanings', []):
                 group = EntriesGroup()
                 group.word = group_word
