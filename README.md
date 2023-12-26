@@ -35,6 +35,10 @@ OXFORD_APP_ID=api_key
 $ python manage.py makemigrations
 $ python manage.py migrate
 ```
+* Create a cache table
+```bash
+$ python manage.py createcachetable
+```
 * Run the development web server
 ```
 $ python manage.py runserver
