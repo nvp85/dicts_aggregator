@@ -1,0 +1,35 @@
+version: '3.4'
+
+services:
+  web:
+    image: dictsaggregator:latest
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 8000:8000
+    env_file:
+      - .env
+    environment:
+      - DATABASE_URL=postgres://dicts_aggregator:notsecret@db:5432/dicts_aggregator
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432
+    environment:
+          - POSTGRES_USER=dicts_aggregator
+          - POSTGRES_PASSWORD=notsecret
+          - POSTGRES_DB=dicts_aggregator
+    healthcheck:
+      test: pg_isready -U dicts_aggregator
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+volumes:
+  postgres_data:
