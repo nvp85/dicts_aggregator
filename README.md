@@ -7,7 +7,16 @@ Python 3.7+
 Django 4.2
 
 
-## Launch
+## Launch locally with Docker
+* Clone the repository
+* Create .env file
+* run in the project directory the following commands:
+```bash
+docker compose up -d 
+docker exec web python manage.py migrate --noinput
+docker exec web python manage.py createcachetable
+```
+## Launch locally without Docker
 Prerequisites: Postgresql running on the port 5432 (default port).
 
 To run this project locally implement the following steps:
