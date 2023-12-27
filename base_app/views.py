@@ -6,6 +6,7 @@ from django.db import transaction
 from base_app.models import SearchHistoryRecord
 from base_app.forms import SearchForm, DICTS_CHOICES
 from base_app.search import search
+from django.core.cache import cache
 
 
 def homepage(request):
@@ -40,7 +41,13 @@ def search_view(request):
     search_form = SearchForm()
     if request.method == 'GET' and 'word' in request.GET:
         word = request.GET.get('word')
-        dicts = [d[0] for d in DICTS_CHOICES]
+        dicts = []
+        for d in DICTS_CHOICES:
+            d = d[0]
+            if cache.get(d.lower()+":"+word):
+                dicts.append(d)
+        if not dicts:
+            dicts = [d[0] for d in DICTS_CHOICES]
         search_form.fields['dicts'].initial = dicts
     elif request.POST:
         search_form = SearchForm(request.POST)
