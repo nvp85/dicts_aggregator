@@ -2,7 +2,7 @@
 
 It's a web application that provides a unified interface for word lookup across multiple online dictionaries, using their APIs. Currently, it supports 3 dictionaries: Oxford, Yandex, and Free Dictionary. Crafted with Django and powered by PostgreSQL for my own use as a language learning tool.
 
-## Techmologies
+## Technologies
 Python 3.7+
 Django 4.2
 
